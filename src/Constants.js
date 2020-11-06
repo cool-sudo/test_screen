@@ -1,0 +1,1 @@
+export const INVALID_TRANSFER_AMOUNT_MESSAGE = 'Please enter a valid transfer amount'
