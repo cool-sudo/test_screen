@@ -8,11 +8,13 @@ export default function Transfer() {
 
     return (
         <div>
+            <h3>Transfer</h3>
             <form onSubmit={handleSubmit(onSubmit)}>
                 { errors.amount && <p>{errors.amount.message}</p>}
                 <input type="number" placeholder="Amount" name="amount" ref={register({ required: INVALID_TRANSFER_AMOUNT_MESSAGE})} />
-                <input type="submit" />
+                <input type="submit" value="Proceed"/>
             </form>
+            <hr></hr>
         </div>
 
     );
