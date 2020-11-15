@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form"
-import { INVALID_TRANSFER_AMOUNT_MESSAGE } from './Constants'
-import { STATEMENTBASEURI } from './Constants'
+import { STATEMENTBASEURI } from '../Constants'
 import Loader from './Loader'
-import { stat } from "fs";
+import '../styles/Statement.css'
 export default function Statement() {
 
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit } = useForm();
     const [appState, setAppState] = useState({
         loading: false,
         selectedOption: null,
@@ -90,7 +89,7 @@ export default function Statement() {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <table>
                     <tbody>
-                        <tr>
+                        <tr id="entry">
                             <td>
                                 <input type="radio" name="searchMode" value="Last" id="Last" onChange={handleOptionChange} />
                             </td>
@@ -108,7 +107,7 @@ export default function Statement() {
                                 </select>
                             </td>
                         </tr>
-                        <tr>
+                        <tr id="entry">
                             <td>
                                 <input type="radio" name="searchMode" value="Year" id="Year" onChange={handleOptionChange}></input>
                             </td>
@@ -119,6 +118,7 @@ export default function Statement() {
                                 <input type="number" placeholder="2019" name="numberOfYear" disabled={appState.selectedOption !== 'Year'} ref={register()}/>
                             </td>
                             <td>
+                                Month
                                 <select name='month' disabled={appState.selectedOption !== 'Year'} ref={register()}>
                                     <option value="January">January</option>
                                     <option value="February">February</option>
@@ -135,7 +135,7 @@ export default function Statement() {
                                 </select>
                             </td>
                         </tr>
-                        <tr>
+                        <tr id="entry">
                             <td>
                                 <input type="radio" name="searchMode" value="Absolute" id="Absolute" onChange={handleOptionChange}></input>
                             </td>
@@ -152,13 +152,9 @@ export default function Statement() {
                                 {/* add date picker here*/}
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <input type="submit" value="search"/>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
+                <div className="PadLeft5"><input type="submit" value="Search" /></div>
             </form>
             {statementListContainer}
         </div>

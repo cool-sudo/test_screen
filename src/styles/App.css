@@ -1,0 +1,21 @@
+.App {
+  margin: 20px;
+  border: 2px solid black;
+  padding-left: 70px;
+  padding-bottom: 10px;
+}
+
+.Header{
+  margin-left: 20px;
+  font-weight: bolder;
+  font-size: large;
+  margin-bottom: 20px;
+  max-width: 500px;
+}
+
+.Center{
+  text-align: center;
+}
+
+
+

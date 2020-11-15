@@ -1,0 +1,16 @@
+#entry td {
+    padding: 5px;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.height30 {
+    height: 30px;
+}
+
+.Main {
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+}
