@@ -1,25 +1,89 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form"
 import { INVALID_TRANSFER_AMOUNT_MESSAGE } from './Constants'
+import { STATEMENTBASEURI } from './Constants'
+import Loader from './Loader'
+import { stat } from "fs";
 export default function Statement() {
 
     const { register, handleSubmit, errors } = useForm();
-    const onSubmit = data => console.log(data);
-
-
     const [appState, setAppState] = useState({
         loading: false,
-        selectedOption: null
+        selectedOption: null,
+        statements: null
     });
+    const onSubmit = (data) => {
+        console.log(data)
+        var valid = false
+        var query = ""
+        if(appState.selectedOption === 'Last'){
+            valid = true
+            query="number="+data.lastNumberOf+"&period="+data.period
+            console.log("query::"+query)
+        }
+        else if(appState.selectedOption === 'Year'){
+            valid = true
+            query="number="+data.numberOfYear+"&month="+data.month
+            console.log("query::"+query)
+        }
+        else if(appState.selectedOption === 'Absolute'){
+
+        }
+        
+        if(valid){
+            setAppState({loading: true, statements: null, selectedOption: appState.selectedOption});
+            //get the data for the above query
+            fetch(STATEMENTBASEURI)
+            .then((response) => response.json())
+            .then((stats) => {
+                setAppState({ loading: false, statements: [stats.list], selectedOption: appState.selectedOption});
+                console.log(stats);
+                });
+        }
+    };
 
     const handleOptionChange = (event) => {
         setAppState({
             loading: false,
-            selectedOption: event.target.value
+            selectedOption: event.target.value,
+            statements: null
         })
         console.log(event.target.value)
     };
 
+    var statementListContainer = <div></div>
+    if(appState.loading){
+        statementListContainer = <Loader/>
+    }
+    else{
+        console.log(appState.statements)
+        if(appState.statements!==null){
+           var data = appState.statements.map((item) => <tr><td>{item.date}</td><td>{item.id}</td><td>{item.pe}</td><td>{item.remark}</td></tr>
+            );
+            console.log(data)
+            statementListContainer = (<table>
+                <tr>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Service Id
+                        </th>
+                        <th>
+                            Point Earned
+                        </th>
+                        <th>
+                            Remark
+                        </th>
+                </tr>
+                <tbody>
+                    {
+                       data 
+                    }
+                </tbody>
+            </table>)
+        }
+    }
     return (
         <div>
             <h3>Statement</h3>
@@ -34,10 +98,10 @@ export default function Statement() {
                                 Last
                             </td>
                             <td>
-                                <input type="number" placeholder="1..2..3" name="lastNumberOf" disabled={appState.selectedOption !== 'Last'} />
+                                <input type="number" placeholder="1..2..3" name="lastNumberOf" disabled={appState.selectedOption !== 'Last'} ref={register()}/>
                             </td>
                             <td>
-                                <select name='period' disabled={appState.selectedOption !== 'Last'}>
+                                <select name='period' disabled={appState.selectedOption !== 'Last'} ref={register()}>
                                     <option value="Week">Week</option>
                                     <option value="Month">Month</option>
                                     <option value="Year">Year</option>
@@ -52,10 +116,10 @@ export default function Statement() {
                                 Year
                             </td>
                             <td>
-                                <input type="number" placeholder="2019" name="lastNumberOf" disabled={appState.selectedOption !== 'Year'} />
+                                <input type="number" placeholder="2019" name="numberOfYear" disabled={appState.selectedOption !== 'Year'} ref={register()}/>
                             </td>
                             <td>
-                                <select name='period' disabled={appState.selectedOption !== 'Year'}>
+                                <select name='month' disabled={appState.selectedOption !== 'Year'} ref={register()}>
                                     <option value="January">January</option>
                                     <option value="February">February</option>
                                     <option value="March">March</option>
@@ -88,9 +152,15 @@ export default function Statement() {
                                 {/* add date picker here*/}
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+                                <input type="submit" value="search"/>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </form>
+            {statementListContainer}
         </div>
 
     );
