@@ -35,7 +35,7 @@ export default function Statement() {
             fetch(STATEMENTBASEURI)
             .then((response) => response.json())
             .then((stats) => {
-                setAppState({ loading: false, statements: [stats.list], selectedOption: appState.selectedOption});
+                setAppState({ loading: false, statements: stats.list, selectedOption: appState.selectedOption});
                 console.log(stats);
                 });
         }
@@ -57,8 +57,26 @@ export default function Statement() {
     else{
         console.log(appState.statements)
         if(appState.statements!==null){
-           var data = appState.statements.map((item) => <tr><td>{item.date}</td><td>{item.id}</td><td>{item.pe}</td><td>{item.remark}</td></tr>
-            );
+           var data = (
+                appState.statements.map((item) => (
+                    <tr>
+                        <td>
+                            {item['date']}
+                        </td>
+                        <td>
+                            {item['id']}
+                        </td>
+                        <td>
+                            {item['pe']}
+                        </td>
+                        <td>
+                            {item['remark']}
+                        </td>
+                    </tr>
+                ))
+            
+           )
+           
             console.log(data)
             statementListContainer = (<table>
                 <tr>
@@ -76,9 +94,7 @@ export default function Statement() {
                         </th>
                 </tr>
                 <tbody>
-                    {
-                       data 
-                    }
+                    {data}
                 </tbody>
             </table>)
         }
@@ -86,7 +102,7 @@ export default function Statement() {
     return (
         <div>
             <h3>Statement</h3>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} className="BorderBlack1">
                 <table>
                     <tbody>
                         <tr id="entry">
@@ -154,7 +170,7 @@ export default function Statement() {
                         </tr>
                     </tbody>
                 </table>
-                <div className="PadLeft5"><input type="submit" value="Search" /></div>
+                <div className="SearchButton"><input type="submit" value="Search" /></div>
             </form>
             {statementListContainer}
         </div>

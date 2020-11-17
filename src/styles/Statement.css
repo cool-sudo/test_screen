@@ -5,3 +5,18 @@
 .PadLeft5 {
     padding: 5px;
 }
+
+.SearchButton {
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.StatementListContainer {
+    max-width: 600px;
+    border: 1px solid black;
+}
+
+.BorderBlack1 {
+    border: 2px solid black;
+    max-width: 600px;
+}
