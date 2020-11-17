@@ -12,8 +12,18 @@
 }
 
 .StatementListContainer {
+    margin-top: 2px;
     max-width: 600px;
-    border: 1px solid black;
+    width: 100%;
+    border-bottom: 2px solid black;
+}
+
+#StatementHeader th{
+    text-align: left;
+}
+
+.header {
+    border-bottom: 1px solid black;
 }
 
 .BorderBlack1 {

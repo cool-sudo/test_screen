@@ -15,28 +15,28 @@ export default function Statement() {
         console.log(data)
         var valid = false
         var query = ""
-        if(appState.selectedOption === 'Last'){
+        if (appState.selectedOption === 'Last') {
             valid = true
-            query="number="+data.lastNumberOf+"&period="+data.period
-            console.log("query::"+query)
+            query = "number=" + data.lastNumberOf + "&period=" + data.period
+            console.log("query::" + query)
         }
-        else if(appState.selectedOption === 'Year'){
+        else if (appState.selectedOption === 'Year') {
             valid = true
-            query="number="+data.numberOfYear+"&month="+data.month
-            console.log("query::"+query)
+            query = "number=" + data.numberOfYear + "&month=" + data.month
+            console.log("query::" + query)
         }
-        else if(appState.selectedOption === 'Absolute'){
+        else if (appState.selectedOption === 'Absolute') {
 
         }
-        
-        if(valid){
-            setAppState({loading: true, statements: null, selectedOption: appState.selectedOption});
+
+        if (valid) {
+            setAppState({ loading: true, statements: null, selectedOption: appState.selectedOption });
             //get the data for the above query
             fetch(STATEMENTBASEURI)
-            .then((response) => response.json())
-            .then((stats) => {
-                setAppState({ loading: false, statements: stats.list, selectedOption: appState.selectedOption});
-                console.log(stats);
+                .then((response) => response.json())
+                .then((stats) => {
+                    setAppState({ loading: false, statements: stats.list, selectedOption: appState.selectedOption });
+                    console.log(stats);
                 });
         }
     };
@@ -51,15 +51,15 @@ export default function Statement() {
     };
 
     var statementListContainer = <div></div>
-    if(appState.loading){
-        statementListContainer = <Loader/>
+    if (appState.loading) {
+        statementListContainer = <Loader />
     }
-    else{
+    else {
         console.log(appState.statements)
-        if(appState.statements!==null){
-           var data = (
+        if (appState.statements !== null) {
+            var data = (
                 appState.statements.map((item) => (
-                    <tr>
+                    <tr id='entry'>
                         <td>
                             {item['date']}
                         </td>
@@ -74,17 +74,18 @@ export default function Statement() {
                         </td>
                     </tr>
                 ))
-            
-           )
-           
+
+            )
+
             console.log(data)
-            statementListContainer = (<table>
-                <tr>
+            statementListContainer = (<table className='StatementListContainer'>
+                <thead className = 'header'>
+                <tr id='StatementHeader'>
                         <th>
                             Date
                         </th>
                         <th>
-                            Service Id
+                            Service Request Id
                         </th>
                         <th>
                             Point Earned
@@ -92,7 +93,8 @@ export default function Statement() {
                         <th>
                             Remark
                         </th>
-                </tr>
+                    </tr>
+                </thead>
                 <tbody>
                     {data}
                 </tbody>
@@ -113,7 +115,7 @@ export default function Statement() {
                                 Last
                             </td>
                             <td>
-                                <input type="number" placeholder="1..2..3" name="lastNumberOf" disabled={appState.selectedOption !== 'Last'} ref={register()}/>
+                                <input type="number" placeholder="1..2..3" name="lastNumberOf" disabled={appState.selectedOption !== 'Last'} ref={register()} />
                             </td>
                             <td>
                                 <select name='period' disabled={appState.selectedOption !== 'Last'} ref={register()}>
@@ -131,7 +133,7 @@ export default function Statement() {
                                 Year
                             </td>
                             <td>
-                                <input type="number" placeholder="2019" name="numberOfYear" disabled={appState.selectedOption !== 'Year'} ref={register()}/>
+                                <input type="number" placeholder="2019" name="numberOfYear" disabled={appState.selectedOption !== 'Year'} ref={register()} />
                             </td>
                             <td>
                                 Month
